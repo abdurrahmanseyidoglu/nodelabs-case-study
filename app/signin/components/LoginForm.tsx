@@ -1,4 +1,5 @@
 "use client";
+import Button from "@/components/Button";
 import Input from "@/components/Input";
 import Image from "next/image";
 import Link from "next/link";
@@ -37,25 +38,22 @@ export default function LoginForm() {
           label="Password"
           placeholder="Enter your password"
         />
-        <button
-          className="w-full py-3.5 bg-primary rounded-primary text-dark-1 font-semibold hover:brightness-95 ease-in-out duration-150 hover:cursor-pointer active:brightness-90 mb-4"
+        <Button
+          text="Sign In"
+          variant="primary"
+          hasIcon={false}
           type="submit"
-        >
-          Sign In
-        </button>
-        <button
+        />
+        <Button
+          text="Sign in with Google"
+          variant="secondary"
+          hasIcon={true}
+          iconAlt="Google logo"
+          iconPath="./GoogleLogo.svg"
+          iconSize={24}
           type="button"
-          className="flex items-center justify-center gap-2.5 w-full py-3.5 border border-gray-5 rounded-primary  hover:bg-gray-100 ease-in-out duration-150 hover:cursor-pointer active:brightness-90"
           onClick={handleGoogleLogin}
-        >
-          <Image
-            src="./GoogleLogo.svg"
-            alt="googleLogo"
-            width={24}
-            height={24}
-          />
-          <p className="text-dark-3 font-semibold"> Sign in with Google</p>
-        </button>
+        />
       </form>
       <div className="flex items-center justify-center gap-1 text-sm">
         <p className="text-dark-3 ">{`Don't have an account?`}</p>

@@ -1,14 +1,15 @@
 "use client";
+
+import Button from "@/components/Button";
 import Input from "@/components/Input";
-import Image from "next/image";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
-export default function LoginForm() {
+export default function SignupForm() {
   const { register, handleSubmit } = useForm();
   // !TODO: Handle OAuth SignUp
   const handleGoogleSignUp = () => {
-    console.log("Login via Google");
+    console.log("Signup via Google");
   };
 
   return (
@@ -46,25 +47,22 @@ export default function LoginForm() {
           label="Password"
           placeholder="Enter your password"
         />
-        <button
-          className="w-full py-3.5 bg-primary rounded-primary text-dark-1 font-semibold hover:brightness-95 ease-in-out duration-150 hover:cursor-pointer active:brightness-90 mb-4"
+        <Button
+          text="Create Account"
+          variant="primary"
+          hasIcon={false}
           type="submit"
-        >
-          Create Account
-        </button>
-        <button
+        />
+        <Button
+          text="Sign up with Google"
+          variant="secondary"
+          hasIcon={true}
+          iconAlt="Google logo"
+          iconPath="./GoogleLogo.svg"
+          iconSize={24}
           type="button"
-          className="flex items-center justify-center gap-2.5 w-full py-3.5 border border-gray-5 rounded-primary  hover:bg-gray-100 ease-in-out duration-150 hover:cursor-pointer active:brightness-90"
           onClick={handleGoogleSignUp}
-        >
-          <Image
-            src="./GoogleLogo.svg"
-            alt="googleLogo"
-            width={24}
-            height={24}
-          />
-          <p className="text-dark-3 font-semibold"> Sign up with google</p>
-        </button>
+        />
       </form>
       <div className="flex items-center justify-center gap-1 text-sm">
         <p className="text-dark-3 ">{`Already have an account?`}</p>
