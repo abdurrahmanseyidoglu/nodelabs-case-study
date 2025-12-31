@@ -11,15 +11,16 @@
 }
 
 .curved-line::after {
-  top: 30px;
-  inset-inline-start: 0;
-  z-index: 0;
+  top: 23px;
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
   position: absolute;
   cursor: default;
   content: "";
-  width: 100%;
+  width: 150%;
   height: 50px;
   border: 5px solid;
   border-color: var(--color-primary) transparent transparent transparent;
-  border-radius: 50px;
+  border-radius: 50%;
+  pointer-events: none;
 }

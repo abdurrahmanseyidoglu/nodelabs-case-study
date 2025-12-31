@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import LoginForm from "./components/LoginForm";
+import LoginForm from "./components/SigninForm";
 export default function Page() {
   return (
     <div className="flex justify-around h-screen">
