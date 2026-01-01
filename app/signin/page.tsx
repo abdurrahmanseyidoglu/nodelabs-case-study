@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import AuthenticationImage from "@/components/AuthenticationImage";
 import LoginForm from "./components/SigninForm";
