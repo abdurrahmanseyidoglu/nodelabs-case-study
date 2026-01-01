@@ -2,11 +2,21 @@
 
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import { SignupFormData } from "@/types/AuthenticationFormData";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 export default function SignupForm() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<SignupFormData>();
+  const onSubmit = async (data: SignupFormData) => {
+    console.log(data.email, data.password);
+    reset();
+  };
   // !TODO: Handle OAuth SignUp
   const handleGoogleSignUp = () => {
     console.log("Signup via Google");
@@ -16,37 +26,77 @@ export default function SignupForm() {
     <>
       <form
         className="flex flex-col w-full mb-6"
-        onSubmit={handleSubmit((data) => {
-          console.log(data);
-        })}
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
       >
         <Input
-          {...register("fullName")}
+          {...register("fullName", {
+            required: "Full name is required",
+            minLength: {
+              value: 2,
+              message: "Full name must be at least 3 characters long",
+            },
+          })}
           type="text"
           name="fullName"
           autoComplete="name"
           id="fullName"
           label="Full Name"
           placeholder="Enter your full name"
+          isRequired
         />
+        {errors.fullName && (
+          <span className="text-red-500 text-sm mb-2 -mt-3 text-wrap">
+            {errors.fullName.message}
+          </span>
+        )}
         <Input
-          {...register("email")}
-          type="email"
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Email format is invalid",
+            },
+          })}
           name="email"
           autoComplete="email"
           id="email"
           label="Email"
           placeholder="Enter your email"
+          type="email"
+          isRequired
         />
+        {errors.email && (
+          <span className="text-red-500 text-sm mb-2 -mt-3 block ">
+            {errors.email.message}
+          </span>
+        )}
         <Input
-          {...register("password")}
+          {...register("password", {
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Password must be at least 8 characters long",
+            },
+            pattern: {
+              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+              message:
+                "Password must contain at least one lowercase letter, one uppercase letter, and one number.",
+            },
+          })}
           type="password"
           name="password"
           autoComplete="current-password"
           id="password"
           label="Password"
           placeholder="Enter your password"
+          isRequired
         />
+        {errors.password && (
+          <span className="text-red-500 text-sm mb-2 -mt-3 text-wrap">
+            {errors.password.message}
+          </span>
+        )}
         <Button
           text="Create Account"
           variant="primary"

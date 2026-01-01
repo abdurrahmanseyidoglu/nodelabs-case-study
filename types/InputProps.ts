@@ -8,5 +8,6 @@ export default interface InputProps {
   autoComplete?: HTMLInputAutoCompleteAttribute;
   placeholder: string;
   value?: string | number;
+  isRequired?: boolean;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }

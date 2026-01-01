@@ -1,11 +1,22 @@
 "use client";
 import Button from "@/components/Button";
 import Input from "@/components/Input";
+import { SigninFormData } from "@/types/AuthenticationFormData";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 
 export default function LoginForm() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<SigninFormData>();
+  const onSubmit = async (data: SigninFormData) => {
+    console.log(data.email, data.password);
+    reset();
+  };
+
   // !TODO: Handle OAuth Login
   const handleGoogleLogin = () => {
     console.log("Login via Google");
@@ -15,28 +26,56 @@ export default function LoginForm() {
     <>
       <form
         className="flex flex-col w-full mb-6"
-        onSubmit={handleSubmit((data) => {
-          console.log(data);
-        })}
+        onSubmit={handleSubmit(onSubmit)}
+        noValidate
       >
         <Input
-          {...register("email")}
-          type="email"
+          {...register("email", {
+            required: "Email is required",
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Email format is invalid",
+            },
+          })}
           name="email"
           autoComplete="email"
           id="email"
           label="Email"
           placeholder="Enter your email"
+          type="email"
+          isRequired
         />
+        {errors.email && (
+          <span className="text-red-500 text-sm mb-2 -mt-3 ">
+            {errors.email.message}
+          </span>
+        )}
         <Input
-          {...register("password")}
+          {...register("password", {
+            required: "Password is required",
+            minLength: {
+              value: 8,
+              message: "Password must be at least 8 characters long ",
+            },
+            pattern: {
+              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+              message:
+                "Password must contain at least one lowercase letter, one uppercase letter, and one number.",
+            },
+          })}
           type="password"
           name="password"
           autoComplete="current-password"
           id="password"
           label="Password"
           placeholder="Enter your password"
+          isRequired
         />
+        {errors.password && (
+          <span className="text-red-500 text-sm mb-2 -mt-3  text-wrap">
+            {errors.password.message}
+          </span>
+        )}
         <Button
           text="Sign In"
           variant="primary"

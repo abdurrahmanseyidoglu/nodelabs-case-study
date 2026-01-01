@@ -1,6 +1,6 @@
 import InputProps from "@/types/InputProps";
 
-export default function Input({ label, ...rest }: InputProps) {
+export default function Input({ label, isRequired, ...rest }: InputProps) {
   return (
     <>
       {label && (
@@ -8,7 +8,7 @@ export default function Input({ label, ...rest }: InputProps) {
           className="text-sm text-dark-1 font-medium mb-2.5"
           htmlFor={rest.id}
         >
-          {label}
+          {label} {isRequired && <span>*</span>}
         </label>
       )}
       {/* Allow react-hook-form to pass any necessary props so it can control
