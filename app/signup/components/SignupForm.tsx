@@ -15,7 +15,7 @@ export default function SignupForm() {
   return (
     <>
       <form
-        className="flex flex-col w-86 mb-6"
+        className="flex flex-col w-full mb-6"
         onSubmit={handleSubmit((data) => {
           console.log(data);
         })}

@@ -1,12 +1,13 @@
 "use client";
 import Image from "next/image";
+import AuthenticationImage from "@/components/AuthenticationImage";
 import LoginForm from "./components/SigninForm";
 export default function Page() {
   return (
     <div className="flex justify-around h-screen">
-      <div className="pt-10 h-full flex flex-col justify-center">
+      <div className="pt-10 h-full flex flex-col justify-center w-101 sm:w-fit px-5">
         <Image src="/Logo.svg" alt="Logo" width={108} height={30} />
-        <div className="my-auto">
+        <div className="my-auto w-full">
           <h1 className="text-3xl text-dark-1 mb-2 font-semibold">Sign In</h1>
           <p className="text-dark-3 mb-6">
             Welcome back! Please enter your details
@@ -14,16 +15,7 @@ export default function Page() {
           <LoginForm />
         </div>
       </div>
-      <div className="relative w-[35%] h-full">
-        <Image
-          src="/AuthenticationImage.png"
-          alt="Authentication image"
-          fill
-          sizes={"100vh"}
-          className="object-cover"
-          loading="eager"
-        />
-      </div>
+      <AuthenticationImage imagePath="/AuthenticationImage.png" />
     </div>
   );
 }
