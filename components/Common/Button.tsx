@@ -9,11 +9,16 @@ export default function Button(props: ButtonProps) {
         disabled={props.isDisabled || props.isLoading}
         className={`w-full py-3.5 
             ${
-              props.variant === `primary`
+              props.variant === `primary` && !props.isLoading
                 ? "bg-primary text-dark-1"
-                : "border text-dark-3 border-gray-5 active:brightness-90 hover:bg-gray-100"
+                : "border text-dark-3 border-gray-5"
             }
-         rounded-primary font-semibold hover:brightness-95 ease-in-out duration-150 hover:cursor-pointer active:brightness-90 mb-4`}
+             ${
+               props.isLoading
+                 ? "bg-gray-100 cursor-wait"
+                 : "hover:brightness-95 hover:cursor-pointer active:brightness-90 hover:bg-gray-100"
+             }
+         rounded-primary font-semibold ease-in-out duration-150 mb-4`}
         type={props.type || "button"}
       >
         <div

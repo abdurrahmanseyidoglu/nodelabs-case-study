@@ -1,4 +1,3 @@
-import Image from "next/image";
 import AuthenticationImage from "@/components/Common/AuthenticationImage";
 import LoginForm from "./components/SigninForm";
 import Logo from "@/components/Common/Logo";

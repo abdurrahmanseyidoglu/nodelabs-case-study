@@ -20,7 +20,7 @@ export default function SideNavTab(props: SideNavProps) {
         color={`${
           pathname === props.link
             ? "var(--color-dark-1)"
-            : "var(--color-dark-3)"
+            : "var(--color-dark-2)"
         }`}
       />
       <p

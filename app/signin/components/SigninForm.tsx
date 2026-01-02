@@ -4,26 +4,53 @@ import Input from "@/components/Common/Input";
 import { SigninFormData } from "@/types/AuthenticationFormData";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<SigninFormData>();
+
   const onSubmit = async (data: SigninFormData) => {
-    console.log(data.email, data.password);
-    reset();
+    setError(null);
+    setLoading(true);
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+
+    setLoading(false);
+
+    if (result?.error) {
+      console.log(data);
+      //TODO: research on how to handle response error messages instead of a generic error message (to many requests, invalid credentials.. etc..)
+      setError("Error happened");
+      return;
+    }
+
+    router.push("/dashboard");
   };
 
-  // !TODO: Handle OAuth Login
   const handleGoogleLogin = () => {
     console.log("Login via Google");
   };
 
   return (
     <>
+      {error && (
+        <div className="text-red-500 text-sm mb-4 p-3 bg-red-50 rounded-md">
+          {error}
+        </div>
+      )}
       <form
         className="flex flex-col w-full mb-6"
         onSubmit={handleSubmit(onSubmit)}
@@ -77,10 +104,11 @@ export default function LoginForm() {
           </span>
         )}
         <Button
-          text="Sign In"
+          text={loading ? "Signing in..." : "Sign In"}
           variant="primary"
           hasIcon={false}
           type="submit"
+          isDisabled={loading}
         />
         <Button
           text="Sign in with Google"

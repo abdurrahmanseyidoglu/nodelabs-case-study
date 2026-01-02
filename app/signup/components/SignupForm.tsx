@@ -1,27 +1,63 @@
+"use client";
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import { SignupFormData } from "@/types/AuthenticationFormData";
+import { RegisterResponse, ApiError } from "@/types/ApiResponse";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function SignupForm() {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<SignupFormData>();
+
   const onSubmit = async (data: SignupFormData) => {
-    console.log(data.email, data.password);
-    reset();
+    setError(null);
+    setLoading(true);
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/register`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: data.fullName,
+          email: data.email,
+          password: data.password,
+        }),
+      }
+    );
+
+    const result: RegisterResponse | ApiError = await res.json();
+    setLoading(false);
+
+    if (!res.ok || !result.success) {
+      setError(result.message || "Registration failed");
+      return;
+    }
+    
+    router.push("/signin");
   };
-  // !TODO: Handle OAuth SignUp
+
   const handleGoogleSignUp = () => {
     console.log("Signup via Google");
   };
 
   return (
     <>
+      {error && (
+        <div className="text-red-500 text-sm mb-4 p-3 bg-red-50 rounded-md">
+          {error}
+        </div>
+      )}
       <form
         className="flex flex-col w-full mb-6"
         onSubmit={handleSubmit(onSubmit)}
@@ -96,10 +132,11 @@ export default function SignupForm() {
           </span>
         )}
         <Button
-          text="Create Account"
+          text={loading ? "Creating Account..." : "Create Account"}
           variant="primary"
           hasIcon={false}
           type="submit"
+          isDisabled={loading}
         />
         <Button
           text="Sign up with Google"

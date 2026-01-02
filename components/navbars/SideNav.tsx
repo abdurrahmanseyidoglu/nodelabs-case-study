@@ -8,6 +8,7 @@ import Settings from "../icons/Settings";
 import Help from "../icons/Help";
 import Logout from "../icons/Logout";
 import Logo from "../Common/Logo";
+import { logout } from "@/lib/auth-client";
 
 export default function SideNav() {
   return (
@@ -39,7 +40,13 @@ export default function SideNav() {
         </div>
         <div className="w-full flex flex-col gap-0.5">
           <SideNavTab link="/dashboard/help" icon={Help} text="Help" />
-          <SideNavTab link="/dashboard/logout" icon={Logout} text="Logout" />
+          <button
+            onClick={() => logout()}
+            className="hover:cursor-pointer flex items-center gap-3 p-4 rounded-lg text-dark-3 hover:bg-gray-100 w-full"
+          >
+            <Logout color={"var(--color-dark-2)"} />
+            <span className="text-sm font-medium">Logout</span>
+          </button>
         </div>
       </div>
     </div>
