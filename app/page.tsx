@@ -1,16 +1,15 @@
-import SideNavTab from "@/components/navbars/SideNavTab";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="">
-      <main>Empty page</main>
-      <div className="w-50">
-        <SideNavTab
-          link="/signin"
-          iconPath="/DashboardIcon.svg"
-          text="Dashboard"
-        />
-      </div>
+    <div className="min-h-screen">
+      <h1 className="mb-5">Woah! Such empty :D</h1>
+      <Link
+        href="/dashboard"
+        className="p-3 bg-amber-200 block w-fit rounded-primary hover:bg-amber-500"
+      >
+        Go to Dashboard
+      </Link>
     </div>
   );
 }

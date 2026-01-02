@@ -1,12 +1,11 @@
 "use client";
 import { SideNavProps } from "@/types/Navbar";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import Dashboard from "../icons/Dashboard";
 
 export default function SideNavTab(props: SideNavProps) {
   const pathname = usePathname();
+  const IconComponent = props.icon;
 
   return (
     <Link
@@ -15,9 +14,9 @@ export default function SideNavTab(props: SideNavProps) {
         pathname === props.link
           ? "bg-primary font-semibold hover:bg-primary"
           : "hover:bg-gray-100"
-      } p-4 flex items-center justify-start rounded-lg gap-3 text-sm font-medium text-dark-2 w-full `}
+      } p-4 flex items-center justify-start rounded-lg gap-3 text-sm font-medium text-dark-2 w-full`}
     >
-      <Dashboard
+      <IconComponent
         color={`${
           pathname === props.link
             ? "var(--color-dark-1)"

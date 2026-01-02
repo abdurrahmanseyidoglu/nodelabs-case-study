@@ -1,5 +1,5 @@
 export interface SideNavProps {
-text:string
-iconPath:string
-link:string
+  text: string;
+  icon: React.ComponentType<{ color: string }>;
+  link: string;
 }
