@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import SignupForm from "./components/SignupForm";
-import AuthenticationImage from "@/components/AuthenticationImage";
+import AuthenticationImage from "@/components/Common/AuthenticationImage";
 export default function Page() {
   return (
     <div className="flex justify-around h-screen">
