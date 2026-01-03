@@ -43,8 +43,8 @@ export default function SignupForm() {
       setError(result.message || "Registration failed");
       return;
     }
-    
-    router.push("/signin");
+
+    router.push("/signin?registered=true");
   };
 
   const handleGoogleSignUp = () => {

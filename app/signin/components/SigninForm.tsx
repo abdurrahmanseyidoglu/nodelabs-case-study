@@ -5,13 +5,29 @@ import { SigninFormData } from "@/types/AuthenticationFormData";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (searchParams.get("registered") === "true") {
+      toast.success("Registration successful!", {
+        duration: 6000,
+        style: {
+          color: "var(--color-dark-1)",
+          background: "var(--color-primary)",
+        },
+      });
+      // remove the redirect params
+      window.history.replaceState({}, "", "/signin");
+    }
+  }, [searchParams]);
 
   const {
     register,
@@ -22,22 +38,45 @@ export default function LoginForm() {
   const onSubmit = async (data: SigninFormData) => {
     setError(null);
     setLoading(true);
-    const result = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: false,
-    });
 
-    setLoading(false);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: data.email,
+            password: data.password,
+          }),
+        }
+      );
 
-    if (result?.error) {
-      console.log(data);
-      //TODO: research on how to handle response error messages instead of a generic error message (to many requests, invalid credentials.. etc..)
-      setError("Error happened");
-      return;
+      const responseData = await res.json();
+
+      if (!res.ok || !responseData.success) {
+        setError(responseData.message || "Authentication failed");
+        setLoading(false);
+        return;
+      }
+
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      setLoading(false);
+
+      if (result?.error) {
+        setError("Authentication failed. Please try again.");
+        return;
+      }
+      router.push("/dashboard");
+    } catch (err) {
+      setLoading(false);
+      setError("Error happened!");
     }
-
-    router.push("/dashboard");
   };
 
   const handleGoogleLogin = () => {
