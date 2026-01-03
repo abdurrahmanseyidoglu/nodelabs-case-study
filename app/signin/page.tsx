@@ -1,6 +1,8 @@
 import AuthenticationImage from "@/components/Common/AuthenticationImage";
 import LoginForm from "./components/SigninForm";
 import Logo from "@/components/Common/Logo";
+import { Suspense } from "react";
+
 export default function Page() {
   return (
     <div className="flex justify-around h-screen">
@@ -11,7 +13,9 @@ export default function Page() {
           <p className="text-dark-3 mb-6">
             Welcome back! Please enter your details
           </p>
-          <LoginForm />
+          <Suspense>
+            <LoginForm />
+          </Suspense>
         </div>
       </div>
       <AuthenticationImage imagePath="/AuthenticationImage.png" />
