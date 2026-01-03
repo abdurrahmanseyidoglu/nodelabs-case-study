@@ -1,13 +1,15 @@
-import { auth } from "@/auth";
+"use client";
+import { useSession } from "next-auth/react";
 import BankCardIndex from "@/components/Common/BankCard/BankCardIndex";
-export default async function Home() {
-  const session = await auth();
+
+export default function Home() {
+  const { data: session } = useSession();
+
   return (
     <div>
       <h1>Dashboard</h1>
       <div>
-        {/* TODO: Fix ts and get user profile info */}
-        <pre>{`${JSON.stringify(session?.user.fullName)}`}</pre>
+        <pre>{JSON.stringify(session?.user, null, 2)}</pre>
       </div>
       {/* !TODO: Make this Dynamic via props  */}
       <div className="bg-red-50 p-8">
