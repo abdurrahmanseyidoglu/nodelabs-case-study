@@ -1,15 +1,11 @@
 "use client";
-import { useSession } from "next-auth/react";
 import BankCardIndex from "@/components/Common/BankCard/BankCardIndex";
 import BalanceCard from "@/components/Common/BalanceCard";
 import ClosedWallet from "@/components/icons/ClosedWallet";
 import WalletPlus from "@/components/icons/WalletPlus";
 export default function Home() {
-  const { data: session } = useSession();
-
   return (
     <div>
-      <h1>Dashboard</h1>
       <div className="flex items-center justify-start gap-6.25 flex-wrap">
         <BalanceCard
           icon={ClosedWallet}
@@ -42,9 +38,7 @@ export default function Home() {
           totalBalanceClass="text-dark-1"
         />
       </div>
-      <div>
-        <pre>{JSON.stringify(session?.user, null, 2)}</pre>
-      </div>
+
       {/* !TODO: Make this Dynamic via props  */}
       <div className="bg-red-50 p-8">
         <BankCardIndex />
