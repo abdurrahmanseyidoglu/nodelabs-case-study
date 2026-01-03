@@ -1,4 +1,4 @@
-export default function ClosedWallet({
+export default function CreditCardChip({
   width,
   height,
 }: {

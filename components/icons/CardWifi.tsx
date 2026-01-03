@@ -1,4 +1,4 @@
-export default function ClosedWallet({ color }: { color?: string }) {
+export default function CardWifi({ color }: { color?: string }) {
   return (
     <svg
       width="23"
