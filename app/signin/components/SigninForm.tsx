@@ -80,7 +80,7 @@ export default function LoginForm() {
   };
 
   const handleGoogleLogin = () => {
-    console.log("Login via Google");
+    signIn("google", { callbackUrl: "/dashboard" });
   };
 
   return (

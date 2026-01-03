@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 export default function SignupForm() {
   const router = useRouter();
@@ -48,7 +49,7 @@ export default function SignupForm() {
   };
 
   const handleGoogleSignUp = () => {
-    console.log("Signup via Google");
+    signIn("google", { callbackUrl: "/dashboard" });
   };
 
   return (
