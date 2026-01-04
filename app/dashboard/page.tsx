@@ -106,11 +106,10 @@ export default function Home() {
   ];
 
   return (
-   
     <div className="">
-      <div className="flex items-start justify-start gap-8.75 overflow-x-hidden">
+      <div className="flex items-start justify-between gap-8.75 overflow-x-hidden">
         {/* Left Side */}
-        <div>
+        <div className="grow">
           {/* Balance Cards */}
           <div className="flex items-center justify-start gap-6.25 flex-wrap grow">
             {balanceCards.map((card, index) => (
