@@ -2,7 +2,7 @@
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import { SignupFormData } from "@/types/AuthenticationFormData";
-import { _register as registerUser } from "@/lib/api-actions";
+import { _register as registerUser } from "@/lib/apiActions";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useState } from "react";

@@ -2,7 +2,7 @@
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import { SigninFormData } from "@/types/AuthenticationFormData";
-import { _login } from "@/lib/api-actions";
+import { _login } from "@/lib/apiActions";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";

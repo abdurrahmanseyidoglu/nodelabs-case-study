@@ -11,7 +11,7 @@ export default function DashboardLayout({
       <div className="h-full flex items-start justify-start gap-10 pe-10">
         <SideNav />
         <div className="flex flex-col w-full">
-          <div className="py-7.5">
+          <div className="py-4">
             <UpperNav />
           </div>
           {children}

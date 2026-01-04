@@ -151,15 +151,19 @@ export async function _getWallet(accessToken: string): Promise<WalletResponse> {
 }
 
 export async function _getRecentTransactions(
-  accessToken: string
+  accessToken: string,
+  limit: number
 ): Promise<RecentTransactionsResponse> {
-  const res = await fetch(`${API_BASE}/financial/transactions/recent`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const res = await fetch(
+    `${API_BASE}/financial/transactions/recent?limit=${limit || 3}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    }
+  );
 
   const data: RecentTransactionsResponse | ApiError = await res.json();
 

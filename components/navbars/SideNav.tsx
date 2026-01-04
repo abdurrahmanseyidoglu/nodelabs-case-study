@@ -8,7 +8,7 @@ import Settings from "../icons/Settings";
 import Help from "../icons/Help";
 import Logout from "../icons/Logout";
 import Logo from "../Common/Logo";
-import { logout } from "@/lib/auth-client";
+import { logout } from "@/lib/authClient";
 
 export default function SideNav() {
   return (
