@@ -2,6 +2,7 @@
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import { SigninFormData } from "@/types/AuthenticationFormData";
+import { _login } from "@/lib/api-actions";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
@@ -24,7 +25,7 @@ export default function LoginForm() {
           background: "var(--color-primary)",
         },
       });
-      // remove the redirect params
+      // remove the redirect params after showing the toast
       window.history.replaceState({}, "", "/signin");
     }
   }, [searchParams]);
@@ -40,25 +41,7 @@ export default function LoginForm() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: data.email,
-            password: data.password,
-          }),
-        }
-      );
-
-      const responseData = await res.json();
-
-      if (!res.ok || !responseData.success) {
-        setError(responseData.message || "Authentication failed");
-        setLoading(false);
-        return;
-      }
+      await _login(data.email, data.password);
 
       const result = await signIn("credentials", {
         email: data.email,
@@ -66,16 +49,15 @@ export default function LoginForm() {
         redirect: false,
       });
 
-      setLoading(false);
-
       if (result?.error) {
         setError("Authentication failed. Please try again.");
         return;
       }
       router.push("/dashboard");
     } catch (err) {
+      setError("An Error happened");
+    } finally {
       setLoading(false);
-      setError("Error happened!");
     }
   };
 

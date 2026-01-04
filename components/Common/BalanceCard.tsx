@@ -3,7 +3,7 @@ import BalanceCardProps from "@/types/BalanceCardProps";
 export default function BalanceCard(props: BalanceCardProps) {
   const IconComponent = props.icon;
   return (
-    <div className={`px-5 py-6 rounded-primary w-55.5 ${props.className}`}>
+    <div className={`px-5 py-6 rounded-primary min-w-55.5 ${props.className}`}>
       <div className="flex items-center justify-start gap-3.75">
         <div
           className={`p-3.25 rounded-full grow-0 shrink-0 w-10.5 h-10.5 ${

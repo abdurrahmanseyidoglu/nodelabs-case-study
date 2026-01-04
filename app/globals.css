@@ -1,4 +1,8 @@
 @import "tailwindcss";
+html {
+  overflow-x: hidden;
+  margin-inline-end: calc(-1 * (100vw - 100%));
+}
 @theme inline {
   --color-dark-1: #1b212d;
   --color-dark-2: #929eae;

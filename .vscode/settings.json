@@ -1,5 +1,12 @@
 {
-  "cSpell.words": ["Fintech", "kumbh", "navbars", "nodelabs", "primereact"],
+  "cSpell.words": [
+    "Fintech",
+    "googleusercontent",
+    "kumbh",
+    "navbars",
+    "nodelabs",
+    "primereact"
+  ],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {

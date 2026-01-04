@@ -14,8 +14,8 @@ const actionItems = [
 export default function UpperNav() {
   const { data: session } = useSession();
 
-  const handleActionClick = (actionValue: string) => {
-    console.log("Clicked:", actionValue);
+  const handleActionClick = () => {
+    console.log("clicked");
   };
   const valueTemplate = () => {
     return (
@@ -28,7 +28,7 @@ export default function UpperNav() {
           height={36}
         />
 
-        <span>{session?.user?.name}</span>
+        <span>{session?.user?.name || session?.user.fullName || "User"}</span>
       </div>
     );
   };
@@ -43,24 +43,26 @@ export default function UpperNav() {
         <div className="w-10">
           <BellIcon color="var(--color-dark-2)" />
         </div>
-        <Dropdown
-          value={null}
-          onChange={(e) => handleActionClick(e.value)}
-          options={actionItems}
-          optionLabel="label"
-          valueTemplate={valueTemplate}
-          placeholder="Actions"
-          className="w-full md:w-14rem"
-          pt={{
-            root: {
-              className: "px-[16px] py-[6px] rounded-[100px] bg-[#FAFAFA]",
-            },
-            item: {
-              className:
-                "px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors",
-            },
-          }}
-        />
+        {session?.user && (
+          <Dropdown
+            value={null}
+            onChange={handleActionClick}
+            options={actionItems}
+            optionLabel="label"
+            valueTemplate={valueTemplate}
+            placeholder="Actions"
+            className="w-full md:w-14rem "
+            pt={{
+              root: {
+                className: "px-[16px] py-[6px] rounded-[100px] bg-[#FAFAFA]",
+              },
+              item: {
+                className:
+                  "px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors bg-white",
+              },
+            }}
+          />
+        )}
       </div>
     </div>
   );

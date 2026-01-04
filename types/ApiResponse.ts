@@ -128,7 +128,7 @@ export interface RecentTransactionsResponse {
   message: string;
   data: {
     transactions: Transaction[];
-    summery: {
+    summary: {
       totalIncome: number;
       totalExpense: number;
       count: number;
@@ -151,7 +151,7 @@ export interface ScheduledTransfersResponse {
   message: string;
   data: {
     transfers: ScheduledTransfer[];
-    summery: {
+    summary: {
       totalScheduledAmount: number;
       count: number;
     };

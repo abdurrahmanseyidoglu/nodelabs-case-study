@@ -2,7 +2,7 @@
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import { SignupFormData } from "@/types/AuthenticationFormData";
-import { RegisterResponse, ApiError } from "@/types/ApiResponse";
+import { _register as registerUser } from "@/lib/api-actions";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -24,28 +24,14 @@ export default function SignupForm() {
     setError(null);
     setLoading(true);
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/register`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: data.fullName,
-          email: data.email,
-          password: data.password,
-        }),
-      }
-    );
-
-    const result: RegisterResponse | ApiError = await res.json();
-    setLoading(false);
-
-    if (!res.ok || !result.success) {
-      setError(result.message || "Registration failed");
-      return;
+    try {
+      await registerUser(data.fullName, data.email, data.password);
+      router.push("/signin?registered=true");
+    } catch (err) {
+      setError("error registration failed");
+    } finally {
+      setLoading(false);
     }
-
-    router.push("/signin?registered=true");
   };
 
   const handleGoogleSignUp = () => {
