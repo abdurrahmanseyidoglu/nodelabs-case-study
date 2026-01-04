@@ -6,6 +6,7 @@ import {
   _getWallet,
   _getFinancialSummary,
   _getScheduledTransfers,
+  _getWorkingCapital,
 } from "@/lib/api-actions";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -16,9 +17,12 @@ import {
   FinancialSummaryResponse,
   WalletCard,
   ScheduledTransfersResponse,
+  WorkingCapitalResponse,
 } from "@/types/ApiResponse";
 import Link from "next/link";
 import SingleTransfer from "@/components/Common/SingleTransfer";
+import { LineChart } from "@mui/x-charts/LineChart";
+import HTMLCircle from "@/components/CustomChartelements/HTMLCircle";
 
 export default function Home() {
   const { data: session } = useSession();
@@ -27,20 +31,25 @@ export default function Home() {
     useState<FinancialSummaryResponse | null>(null);
   const [scheduledTransfers, setScheduledTransfers] =
     useState<ScheduledTransfersResponse | null>(null);
+  const [workingCapital, setWorkingCapital] =
+    useState<WorkingCapitalResponse | null>(null);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       if (session?.accessToken) {
         try {
-          const [walletData, summaryData, transfersData] = await Promise.all([
-            _getWallet(session.accessToken),
-            _getFinancialSummary(session.accessToken),
-            _getScheduledTransfers(session.accessToken),
-          ]);
+          const [walletData, summaryData, transfersData, workingCapitalData] =
+            await Promise.all([
+              _getWallet(session.accessToken),
+              _getFinancialSummary(session.accessToken),
+              _getScheduledTransfers(session.accessToken),
+              _getWorkingCapital(session.accessToken),
+            ]);
           setWallet(walletData);
           setFinancialSummary(summaryData);
           setScheduledTransfers(transfersData);
+          setWorkingCapital(workingCapitalData);
         } catch (error) {
           console.error("Failed to fetch data:", error);
         } finally {
@@ -86,24 +95,108 @@ export default function Home() {
 
   return (
     <div className="flex items-start justify-start gap-8.75 overflow-x-hidden">
-      <div className="flex items-center justify-start gap-6.25 flex-wrap grow">
-        {balanceCards.map((card, index) => (
-          <BalanceCard
-            key={index}
-            icon={card.icon}
-            iconColor={card.iconColor}
-            text={card.text}
-            currencySymbol={card.currency}
-            totalBalance={card.amount}
-            iconBgClass={card.iconBgClass}
-            className={card.className}
-            totalBalanceClass={card.totalBalanceClass}
-          />
-        ))}
-      </div>
+      {/* Left Side */}
+      <div>
+        {/* Balance Cards */}
+        <div className="flex items-center justify-start gap-6.25 flex-wrap grow">
+          {balanceCards.map((card, index) => (
+            <BalanceCard
+              key={index}
+              icon={card.icon}
+              iconColor={card.iconColor}
+              text={card.text}
+              currencySymbol={card.currency}
+              totalBalance={card.amount}
+              iconBgClass={card.iconBgClass}
+              className={card.className}
+              totalBalanceClass={card.totalBalanceClass}
+            />
+          ))}
+        </div>
 
-      {/* Cards Section */}
+        {/* Working Capital Chart */}
+        <div className="w-full mt-7.5 px-6.25 py-3.75 border border-[#F5F5F5] rounded-primary">
+          <p className="font-semibold text-dark-1 text-lg -mb-7">
+            Working Capital
+          </p>
+          {workingCapital?.data && (
+            <LineChart
+              // TODO:
+              // 1- Create a custom ToolTip if ypu get time: https://mui.com/x/react-charts/tooltip/#using-a-custom-tooltip
+              // 2- customize the rest of the chart components to match the Figma design
+              // slots={{ tooltip: CustomItemTooltip }}
+              height={300}
+              series={[
+                {
+                  data: workingCapital.data.data.map((item) => item.income),
+                  label: "Income",
+                  color: "#29A073",
+                  labelMarkType: HTMLCircle,
+                },
+                {
+                  data: workingCapital.data.data.map((item) => item.expense),
+                  label: "Expense",
+                  color: "var(--color-primary)",
+                  labelMarkType: HTMLCircle,
+                },
+              ]}
+              xAxis={[
+                {
+                  scaleType: "point",
+                  data: workingCapital.data.data.map((item) => item.month),
+                  disableLine: true,
+                },
+              ]}
+              yAxis={[
+                {
+                  width: 50,
+                  disableLine: true,
+                  valueFormatter: (value: number) => {
+                    return new Intl.NumberFormat("en", {
+                      notation: "compact",
+                      compactDisplay: "short",
+                    }).format(value);
+                  },
+                },
+              ]}
+              margin={{ left: 0, right: 20, top: 30 }}
+            />
+          )}
+        </div>
+        {/* Recent Transaction */}
+        <div
+          className="flex flex-col gap-5 
+            mt-12.5"
+        >
+          <div className="flex items-center justify-between">
+            <p className="text-lg font-semibold text-dark-1">
+              Recent Transactions
+            </p>
+            <Link
+              href="#"
+              className="flex items-center justify-end gap-1.5 text-[#29A073] font-semibold text-sm"
+            >
+              View All
+              <svg
+                width="6"
+                height="9"
+                viewBox="0 0 6 9"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M-3.47178e-07 1.0575L3.435 4.5L-4.62248e-08 7.9425L1.0575 9L5.5575 4.5L1.0575 -4.62248e-08L-3.47178e-07 1.0575Z"
+                  fill="#29A073"
+                />
+              </svg>
+            </Link>
+          </div>
+          <div className=""></div>
+        </div>
+      </div>
+      {/* Right Side */}
       <div className="w-90 shrink-0">
+        {/* Wallet */}
         <div className="group w-fit rounded-2xl ">
           <div className="w-fit flex flex-col items-center">
             {wallet?.data?.cards?.map((card: WalletCard, index: number) => (
@@ -122,6 +215,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+        {/* Scheduled Transfers */}
         <div className="mt-7.5">
           <div className="flex items-center justify-between mb-6.25">
             <p className="text-lg font-semibold text-dark-1">
