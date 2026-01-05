@@ -24,7 +24,7 @@ import {
 import Link from "next/link";
 import SingleTransfer from "@/components/Common/SingleTransfer";
 import { LineChart } from "@mui/x-charts/LineChart";
-import HTMLCircle from "@/components/CustomChartelements/HTMLCircle";
+import HTMLCircle from "@/components/CustomChartElements/HTMLCircle";
 import SingleTransactionItem from "@/components/Common/SingleTransactionItem";
 
 export default function Home() {
@@ -204,7 +204,7 @@ export default function Home() {
                 </svg>
               </Link>
             </div>
-            <div className="flex items-center justify-between mb-5 ">
+            <div className="flex items-center justify-between ">
               <p className="font-semibold text-xs text-dark-2 w-50">
                 NAME/BUSINESS
               </p>

@@ -2,7 +2,7 @@
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import { SignupFormData } from "@/types/AuthenticationFormData";
-import { _register as registerUser } from "@/lib/apiActions";
+import { _register } from "@/lib/apiActions";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -25,10 +25,16 @@ export default function SignupForm() {
     setLoading(true);
 
     try {
-      await registerUser(data.fullName, data.email, data.password);
+      await _register(data.fullName, data.email, data.password);
+      //TODO: sign user automatically after creating an or redirect him to login with a success message?
+      // await signIn("credentials", {
+      //   email: data.email,
+      //   password: data.password,
+      //   redirect: false,
+      // });
       router.push("/signin?registered=true");
     } catch (err) {
-      setError("error registration failed");
+      setError(`${err}`);
     } finally {
       setLoading(false);
     }
@@ -56,6 +62,11 @@ export default function SignupForm() {
             minLength: {
               value: 2,
               message: "Full name must be at least 3 characters long",
+            },
+            pattern: {
+              value: /^[a-zA-Z\s'-]+$/,
+              message:
+                "Full name can only contain letters, spaces, hyphens, and apostrophes.",
             },
           })}
           type="text"
@@ -130,7 +141,7 @@ export default function SignupForm() {
           variant="secondary"
           hasIcon={true}
           iconAlt="Google logo"
-          iconPath="./GoogleLogo.svg"
+          iconPath="/GoogleLogo.svg"
           iconSize={24}
           type="button"
           onClick={handleGoogleSignUp}

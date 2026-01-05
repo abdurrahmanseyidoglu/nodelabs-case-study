@@ -1,4 +1,4 @@
-export interface User {
+export interface ApiUser {
   id: string;
   fullName: string;
   email: string;
@@ -8,13 +8,15 @@ export interface User {
   lastLoginIP?: string;
   createdAt?: string;
   updatedAt?: string;
+  image?: string;
+  name?: string;
 }
 export interface financialDetail {
   amount: number;
   currency: string;
   change: {
     percentage: number;
-    // TODO:What is it did't change?
+    // TODO:What if it did't change?
     trend: "up" | "down";
   };
 }
@@ -22,7 +24,7 @@ export interface LoginResponse {
   success: boolean;
   message: string;
   data: {
-    user: User;
+    user: ApiUser;
     accessToken: string;
   };
 }
@@ -48,7 +50,7 @@ export interface RefreshTokenResponse {
 export interface UserProfileResponse {
   success: boolean;
   message: string;
-  data: User;
+  data: ApiUser;
 }
 
 export interface FinancialSummary {

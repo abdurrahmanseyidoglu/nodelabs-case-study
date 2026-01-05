@@ -136,7 +136,7 @@ export default function LoginForm() {
           variant="secondary"
           hasIcon={true}
           iconAlt="Google logo"
-          iconPath="./GoogleLogo.svg"
+          iconPath="/GoogleLogo.svg"
           iconSize={24}
           type="button"
           onClick={handleGoogleLogin}

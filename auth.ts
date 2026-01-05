@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
-import { User } from "@/types/ApiResponse";
+import { ApiUser } from "@/types/ApiResponse";
 import { _login } from "@/lib/apiActions";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -46,7 +46,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         console.log(user);
         token.user = user;
         token.accessToken = (
-          user as User & { accessToken: string }
+          user as ApiUser & { accessToken: string }
         ).accessToken;
       }
       return token;
@@ -54,7 +54,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       return {
         ...session,
-        user: token.user as User,
+        user: token.user as ApiUser,
         accessToken: token.accessToken,
       };
     },
