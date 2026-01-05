@@ -32,38 +32,43 @@ export default function UpperNav() {
       </div>
     );
   };
-
-  return (
-    <div className="flex items-center justify-between">
-      <h1 className="text-2xl font-semibold">Dashboard</h1>
-      <div className="flex items-center justify-end gap-11.25">
-        <div className="w-10">
-          <SearchIcon color="var(--color-dark-2)" />
+  if (!session) {
+    return (
+      <div className="animate-pulse h-10 bg-gray-200 rounded-primary"></div>
+    );
+  } else {
+    return (
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Dashboard</h1>
+        <div className="flex items-center justify-end gap-11.25">
+          <div className="w-10">
+            <SearchIcon color="var(--color-dark-2)" />
+          </div>
+          <div className="w-10">
+            <BellIcon color="var(--color-dark-2)" />
+          </div>
+          {session?.user && (
+            <Dropdown
+              value={null}
+              onChange={handleActionClick}
+              options={actionItems}
+              optionLabel="label"
+              valueTemplate={valueTemplate}
+              placeholder="Actions"
+              className="w-full md:w-14rem "
+              pt={{
+                root: {
+                  className: "px-[16px] py-[6px] rounded-[100px] bg-[#FAFAFA]",
+                },
+                item: {
+                  className:
+                    "px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors bg-white",
+                },
+              }}
+            />
+          )}
         </div>
-        <div className="w-10">
-          <BellIcon color="var(--color-dark-2)" />
-        </div>
-        {session?.user && (
-          <Dropdown
-            value={null}
-            onChange={handleActionClick}
-            options={actionItems}
-            optionLabel="label"
-            valueTemplate={valueTemplate}
-            placeholder="Actions"
-            className="w-full md:w-14rem "
-            pt={{
-              root: {
-                className: "px-[16px] py-[6px] rounded-[100px] bg-[#FAFAFA]",
-              },
-              item: {
-                className:
-                  "px-4 py-3 hover:bg-gray-100 cursor-pointer transition-colors bg-white",
-              },
-            }}
-          />
-        )}
       </div>
-    </div>
-  );
+    );
+  }
 }

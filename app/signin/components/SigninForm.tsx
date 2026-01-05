@@ -41,8 +41,6 @@ export default function LoginForm() {
     setLoading(true);
 
     try {
-      await _login(data.email, data.password);
-
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
@@ -55,6 +53,7 @@ export default function LoginForm() {
       }
       router.push("/dashboard");
     } catch (err) {
+      console.error(JSON.stringify(err, null, 2));
       setError("An Error happened");
     } finally {
       setLoading(false);

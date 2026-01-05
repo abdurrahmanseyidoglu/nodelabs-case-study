@@ -22,14 +22,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(credentials) {
         try {
-          const data = await _login(
+          const userLoginResponse = await _login(
             credentials?.email as string,
             credentials?.password as string
           );
 
           return {
-            ...data.data.user,
-            accessToken: data.data.accessToken,
+            ...userLoginResponse.data.user,
+            accessToken: userLoginResponse.data.accessToken,
           };
         } catch {
           return null;
@@ -45,9 +45,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (user) {
         console.log(user);
         token.user = user;
-        token.accessToken = (
-          user as ApiUser & { accessToken: string }
-        ).accessToken;
       }
       return token;
     },
@@ -55,7 +52,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return {
         ...session,
         user: token.user as ApiUser,
-        accessToken: token.accessToken,
       };
     },
   },
