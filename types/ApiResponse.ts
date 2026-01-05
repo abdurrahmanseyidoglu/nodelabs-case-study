@@ -1,6 +1,6 @@
 export interface ApiUser {
   id: string;
-  fullName: string;
+  fullName?: string;
   email: string;
   role?: string;
   isActive?: boolean;
