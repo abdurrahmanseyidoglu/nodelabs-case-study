@@ -70,7 +70,7 @@ export default function Home() {
       }
     };
     fetchData();
-  }, [session]);
+  }, [session?.user?.accessToken]);
 
   const balanceCards = [
     {
