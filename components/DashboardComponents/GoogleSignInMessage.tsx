@@ -1,5 +1,17 @@
+import { useEffect, useState } from "react";
 
 export default function GoogleSignInMessage() {
+  const [showMessage, setShowMessage] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowMessage(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!showMessage) return null;
+
   return (
     <div className="my-9">
       <h1 className="text-5xl text-lime-500 mb-5">
