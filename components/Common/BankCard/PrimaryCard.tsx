@@ -8,7 +8,7 @@ export default function PrimaryCard(props: WalletCard) {
   const lastName = props.bank.split("|")[1].trim();
 
   return (
-    <div className="bg-[linear-gradient(104.3deg,#4A4A49_2.66%,#20201F_90.57%)] rounded-2xl px-7.5 py-4.5 relative w-88.5">
+    <div className="bg-[linear-gradient(104.3deg,#4A4A49_2.66%,#20201F_90.57%)] rounded-2xl px-[30px] py-[18px] relative w-full sm:w-[354px] sm:max-w-[354px]">
       <div className="flex items-center justify-start gap-2 mb-7">
         <p className="text-white">{firstName}</p>
         <div className="inline-block h-5 w-px self-stretch bg-[#626261]"></div>

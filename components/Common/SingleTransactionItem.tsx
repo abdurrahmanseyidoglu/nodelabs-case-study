@@ -5,7 +5,7 @@ import { format } from "date-fns";
 export default function SingleTransactionItem(props: Transaction) {
   const formattedDate = format(new Date(props.date), "dd MM yyyy");
   return (
-    <div className="flex items-center justify-between w-full">
+    <div className="flex items-center justify-between w-full mb-2">
       <div className="flex items-center justify-start gap-3.5 w-50">
         <div className="">
           <Image

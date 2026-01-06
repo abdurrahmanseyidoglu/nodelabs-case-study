@@ -38,9 +38,9 @@ export default function UpperNav() {
     );
   } else {
     return (
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between w-full">
         <h1 className="text-2xl font-semibold">Dashboard</h1>
-        <div className="flex items-center justify-end gap-11.25">
+        <div className="hidden md:flex items-center justify-end gap-11.25">
           <div className="w-10">
             <SearchIcon color="var(--color-dark-2)" />
           </div>

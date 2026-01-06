@@ -107,26 +107,24 @@ export default function Home() {
 
   if (isLoading) {
     return (
+      // Skeleton Loaders
       <div className="animate-pulse">
-        {/* Balance Cards Skeleton */}
         <div className="flex items-center justify-start gap-6.25 flex-wrap grow">
           {[1, 2, 3].map((i) => (
             <div
               key={i}
-              className="h-32 w-64 bg-gray-200 rounded-primary"
+              className="h-32 w-full lg:w-64 bg-gray-200 rounded-primary"
             ></div>
           ))}
         </div>
 
-        {/* Working Capital Chart Skeleton */}
         <div className="w-full mt-7.5 px-6.25 py-3.75 border border-[#F5F5F5] rounded-primary">
-          <div className="h-6 w-40 bg-gray-200 rounded mb-4"></div>
+          <div className="h-6 w-full lg:w-40 bg-gray-200 rounded mb-4"></div>
           <div className="h-64 bg-gray-100 rounded"></div>
         </div>
 
-        {/* Recent Transactions Skeleton */}
         <div className="mt-6 border border-[#F5F5F5] px-6.25 py-3.75 rounded-primary">
-          <div className="h-6 w-48 bg-gray-200 rounded mb-4"></div>
+          <div className="h-6 w-full lg:w-48 bg-gray-200 rounded mb-4"></div>
           {[1, 2, 3].map((i) => (
             <div key={i} className="h-16 bg-gray-100 rounded mb-3"></div>
           ))}
@@ -147,9 +145,9 @@ export default function Home() {
             </p>
           </div>
         )}
-        <div className="flex items-start justify-between gap-8.75 overflow-x-hidden">
+        <div className="flex items-start justify-between gap-8.75  flex-wrap xl:flex-nowrap">
           {/* Left Side */}
-          <div className="grow">
+          <div className="grow min-w-0">
             {/* Balance Cards */}
             <div className="flex items-center justify-start gap-6.25 flex-wrap grow">
               {balanceCards.map((card, index) => (
@@ -169,7 +167,7 @@ export default function Home() {
 
             {/* Working Capital Chart */}
             <div className="w-full mt-7.5 px-6.25 py-3.75 border border-[#F5F5F5] rounded-primary">
-              <p className="font-semibold text-dark-1 text-lg -mb-7">
+              <p className="font-semibold text-dark-1 text-lg text-center mb-3 lg:mb-0 lg:text-start lg:-mb-7">
                 Working Capital
               </p>
               {workingCapital?.data && (
@@ -221,9 +219,9 @@ export default function Home() {
             {/* Recent Transaction */}
             <div
               className="flex flex-col gap-5 
-            mt-6 border border-[#F5F5F5]  px-6.25 py-3.75 rounded-primary "
+            mt-6 border border-[#F5F5F5] rounded-primary w-full"
             >
-              <div className="flex items-center justify-between ">
+              <div className="flex items-center justify-between px-6.25 pt-3.75">
                 <p className="text-lg font-semibold text-dark-1">
                   Recent Transactions
                 </p>
@@ -246,40 +244,60 @@ export default function Home() {
                   </svg>
                 </Link>
               </div>
-              <div className="flex items-center justify-between ">
-                <p className="font-semibold text-xs text-dark-2 w-50">
-                  NAME/BUSINESS
-                </p>
-                <p className="font-semibold text-xs text-dark-2 w-30">TYPE</p>
-                <p className="font-semibold text-xs text-dark-2 w-30">AMOUNT</p>
-                <p className="font-semibold text-xs text-dark-2 w-25">DATE</p>
+              <div className="overflow-x-auto px-6.25 pb-3.75">
+                <div className="min-w-165 overflow-x-hidden">
+                  <div className="flex items-center justify-between mb-5">
+                    <p className="font-semibold text-xs text-dark-2 w-50">
+                      NAME/BUSINESS
+                    </p>
+                    <p className="font-semibold text-xs text-dark-2 w-30">
+                      TYPE
+                    </p>
+                    <p className="font-semibold text-xs text-dark-2 w-30">
+                      AMOUNT
+                    </p>
+                    <p className="font-semibold text-xs text-dark-2 w-25">
+                      DATE
+                    </p>
+                  </div>
+                  {recentTransactions?.data.transactions.map(
+                    (singleTransaction, index) => (
+                      <div key={singleTransaction.id}>
+                        <SingleTransactionItem {...singleTransaction} />
+                        {index !==
+                          recentTransactions?.data.transactions.length - 1 && (
+                          <div className="w-full h-px bg-[#F5F5F5] mb-2"></div>
+                        )}
+                      </div>
+                    )
+                  )}
+                </div>
               </div>
-              {recentTransactions?.data.transactions.map(
-                (singleTransaction) => (
-                  <SingleTransactionItem
-                    {...singleTransaction}
-                    key={singleTransaction.id}
-                  />
-                )
-              )}
             </div>
           </div>
           {/* Right Side */}
-          <div className="w-90 shrink-0">
+          <div className="w-full lg:w-90 shrink-0">
             {/* Wallet */}
-            <div className="group w-fit rounded-2xl ">
-              <div className="w-fit flex flex-col items-center">
+            <div className="group w-full rounded-2xl ">
+              <div className="w-full flex items-center flex-col justify-center">
                 {wallet?.data?.cards?.map((card: WalletCard, index: number) => (
                   <div
                     key={card.id}
                     className={`${
                       index > 0 ? "-mt-13 relative z-20" : ""
-                    } group-hover:mt-1! group-hover:bg-gray-400 rounded-2xl transition-all duration-200`}
+                    } group-hover:mt-1! w-full sm:w-fit flex flex-col items-center  rounded-2xl transition-all duration-200`}
                   >
                     {card.isDefault ? (
-                      <PrimaryCard {...card} />
+                      <div className="w-full">
+                        <PrimaryCard {...card} />
+                      </div>
                     ) : (
-                      <SecondaryCard {...card} />
+                      <div className=" flex items-center w-full ">
+                        <SecondaryCard
+                          {...card}
+                          className="group-hover:bg-gray-400"
+                        />
+                      </div>
                     )}
                   </div>
                 ))}

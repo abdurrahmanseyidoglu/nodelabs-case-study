@@ -3,12 +3,18 @@ import CreditCardChip from "@/components/icons/CreditCardChip";
 import { WalletCard } from "@/types/ApiResponse";
 import Image from "next/image";
 
-export default function SecondaryCard(props: WalletCard) {
+export default function SecondaryCard(
+  props: WalletCard & { className?: string }
+) {
   const firstName = props.bank.split("|")[0].trim();
   const lastName = props.bank.split("|")[1].trim();
   return (
-    <div className="border border-[#b6b6b4] p-[0.5px] backdrop-blur-md bg-[linear-gradient(114.49deg,rgba(255,255,255,0.4)_-41.08%,rgba(255,255,255,0.1)_104.09%)] rounded-2xl px-7.5 py-4.5 relative w-81">
-      <div className="flex items-center justify-start gap-2 mb-7">
+    <div
+      className={`border border-[#b6b6b4] p-[0.5px] backdrop-blur-md bg-[linear-gradient(114.49deg,rgba(255,255,255,0.4)_-41.08%,rgba(255,255,255,0.1)_104.09%)] rounded-2xl px-[20px] py-[15px] relative w-full mx-3 sm:mx-0 sm:w-[324px] transition-colors duration-200 ${
+        props.className || ""
+      }`}
+    >
+      <div className="flex items-center justify-start gap-2 mb-4">
         <p className="text-gray-5">{firstName}</p>
         <div className="inline-block h-5 w-px self-stretch bg-gray-5"></div>
         <p className="text-gray-5 text-xs font-medium">{lastName}</p>
