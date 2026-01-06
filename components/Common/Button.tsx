@@ -18,6 +18,7 @@ export default function Button(props: ButtonProps) {
                  ? "bg-gray-100 cursor-wait"
                  : "hover:brightness-95 hover:cursor-pointer active:brightness-90 hover:bg-gray-100"
              }
+             ${props.className}
          rounded-primary font-semibold ease-in-out duration-150 mb-4`}
         type={props.type || "button"}
       >

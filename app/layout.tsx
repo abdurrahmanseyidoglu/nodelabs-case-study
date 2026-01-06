@@ -23,12 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${kumbhSans.variable} antialiased`}>
-        <_SessionProvider>
-          <div>
-            <Toaster />
-          </div>
-          <main className="h-full">{children}</main>
-        </_SessionProvider>
+          <_SessionProvider>
+            <div>
+              <Toaster />
+            </div>
+            <main className="h-full">{children}</main>
+          </_SessionProvider>
       </body>
     </html>
   );

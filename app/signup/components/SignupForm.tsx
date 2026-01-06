@@ -2,7 +2,7 @@
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import { SignupFormData } from "@/types/AuthenticationFormData";
-import { RegisterResponse, ApiError } from "@/types/ApiResponse";
+import { _register } from "@/lib/apiActions";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
@@ -24,28 +24,20 @@ export default function SignupForm() {
     setError(null);
     setLoading(true);
 
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/register`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          fullName: data.fullName,
-          email: data.email,
-          password: data.password,
-        }),
-      }
-    );
-
-    const result: RegisterResponse | ApiError = await res.json();
-    setLoading(false);
-
-    if (!res.ok || !result.success) {
-      setError(result.message || "Registration failed");
-      return;
+    try {
+      await _register(data.fullName, data.email, data.password);
+      //TODO: sign user automatically after creating an or redirect him to login with a success message?
+      // await signIn("credentials", {
+      //   email: data.email,
+      //   password: data.password,
+      //   redirect: false,
+      // });
+      router.push("/signin?registered=true");
+    } catch (err) {
+      setError(`${err}`);
+    } finally {
+      setLoading(false);
     }
-
-    router.push("/signin?registered=true");
   };
 
   const handleGoogleSignUp = () => {
@@ -70,6 +62,11 @@ export default function SignupForm() {
             minLength: {
               value: 2,
               message: "Full name must be at least 3 characters long",
+            },
+            pattern: {
+              value: /^[a-zA-Z\s'-]+$/,
+              message:
+                "Full name can only contain letters, spaces, hyphens, and apostrophes.",
             },
           })}
           type="text"
@@ -144,7 +141,7 @@ export default function SignupForm() {
           variant="secondary"
           hasIcon={true}
           iconAlt="Google logo"
-          iconPath="./GoogleLogo.svg"
+          iconPath="/GoogleLogo.svg"
           iconSize={24}
           type="button"
           onClick={handleGoogleSignUp}

@@ -8,11 +8,11 @@ import Settings from "../icons/Settings";
 import Help from "../icons/Help";
 import Logout from "../icons/Logout";
 import Logo from "../Common/Logo";
-import { logout } from "@/lib/auth-client";
+import { logout } from "@/lib/authClient";
 
 export default function SideNav() {
   return (
-    <div className="h-screen px-6 pt-8 w-62.5 min-h-0 max-h-screen overflow-y-auto flex flex-col bg-[#fafafa]">
+    <div className="h-full px-6 w-65 min-h-0 max-h-screen overflow-y-auto 2xl:flex flex-col hidden">
       <Logo href="/dashboard" />
       <div className="h-full mb-24 flex flex-col items-start justify-between">
         <div className="flex flex-col items-start gap-0.5 w-full">

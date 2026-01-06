@@ -2,6 +2,7 @@
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import { SigninFormData } from "@/types/AuthenticationFormData";
+import { _login } from "@/lib/apiActions";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
@@ -24,7 +25,7 @@ export default function LoginForm() {
           background: "var(--color-primary)",
         },
       });
-      // remove the redirect params
+      // remove the redirect params after showing the toast
       window.history.replaceState({}, "", "/signin");
     }
   }, [searchParams]);
@@ -40,33 +41,11 @@ export default function LoginForm() {
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/login`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: data.email,
-            password: data.password,
-          }),
-        }
-      );
-
-      const responseData = await res.json();
-
-      if (!res.ok || !responseData.success) {
-        setError(responseData.message || "Authentication failed");
-        setLoading(false);
-        return;
-      }
-
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
         redirect: false,
       });
-
-      setLoading(false);
 
       if (result?.error) {
         setError("Authentication failed. Please try again.");
@@ -74,8 +53,10 @@ export default function LoginForm() {
       }
       router.push("/dashboard");
     } catch (err) {
+      console.error(JSON.stringify(err, null, 2));
+      setError("An Error happened");
+    } finally {
       setLoading(false);
-      setError("Error happened!");
     }
   };
 
@@ -154,7 +135,7 @@ export default function LoginForm() {
           variant="secondary"
           hasIcon={true}
           iconAlt="Google logo"
-          iconPath="./GoogleLogo.svg"
+          iconPath="/GoogleLogo.svg"
           iconSize={24}
           type="button"
           onClick={handleGoogleLogin}
