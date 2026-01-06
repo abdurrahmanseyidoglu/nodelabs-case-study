@@ -105,7 +105,7 @@ export default function Home() {
     },
   ];
 
-  if (isLoading) {
+  if (isLoading && session?.user?.accessToken) {
     return (
       // Skeleton Loaders
       <div className="animate-pulse">
