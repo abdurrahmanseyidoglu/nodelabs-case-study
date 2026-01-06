@@ -6,11 +6,10 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { redirect, useRouter, useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -50,7 +49,6 @@ export default function LoginForm() {
         setError("Please check you email and password and try again");
         redirectPath = `/signin`;
       }
-      router.push("/dashboard");
       redirectPath = `/dashboard`;
     } catch (err) {
       console.error(JSON.stringify(err, null, 2));
