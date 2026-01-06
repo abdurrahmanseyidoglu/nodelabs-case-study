@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Kumbh_Sans } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import _SessionProvider from "@/components/SessionProvider";
+import SessionProvider from "@/components/SessionProvider";
 
 const kumbhSans = Kumbh_Sans({
   variable: "--font-kumbh-sans",
@@ -23,12 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${kumbhSans.variable} antialiased`}>
-          <_SessionProvider>
-            <div>
-              <Toaster />
-            </div>
-            <main className="h-full">{children}</main>
-          </_SessionProvider>
+        <SessionProvider>
+          <div>
+            <Toaster />
+          </div>
+          <main className="h-full">{children}</main>
+        </SessionProvider>
       </body>
     </html>
   );
