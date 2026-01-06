@@ -6,6 +6,7 @@ export async function handleApiResponse(res: Response) {
   if (!res.ok || !data.success) {
     const message = data.message || "Request failed";
     toast.error(message);
+    throw new Error(message);
   }
   return data;
 }

@@ -2,12 +2,11 @@
 import Button from "@/components/Common/Button";
 import Input from "@/components/Common/Input";
 import { SigninFormData } from "@/types/AuthenticationFormData";
-import { _login } from "@/lib/apiActions";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { redirect, useRouter, useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function LoginForm() {
@@ -39,7 +38,7 @@ export default function LoginForm() {
   const onSubmit = async (data: SigninFormData) => {
     setError(null);
     setLoading(true);
-
+    let redirectPath: string | null = null;
     try {
       const result = await signIn("credentials", {
         email: data.email,
@@ -48,15 +47,20 @@ export default function LoginForm() {
       });
 
       if (result?.error) {
-        setError("Authentication failed. Please try again.");
-        return;
+        setError("Please check you email and password and try again");
+        redirectPath = `/signin`;
       }
       router.push("/dashboard");
+      redirectPath = `/dashboard`;
     } catch (err) {
       console.error(JSON.stringify(err, null, 2));
       setError("An Error happened");
+      redirectPath = `/signin`;
     } finally {
       setLoading(false);
+      if (redirectPath) {
+        redirect(redirectPath);
+      }
     }
   };
 

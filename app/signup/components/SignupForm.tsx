@@ -6,11 +6,10 @@ import { _register } from "@/lib/apiActions";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 export default function SignupForm() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -23,6 +22,7 @@ export default function SignupForm() {
   const onSubmit = async (data: SignupFormData) => {
     setError(null);
     setLoading(true);
+    let redirectPath: string | null = null;
 
     try {
       await _register(data.fullName, data.email, data.password);
@@ -32,11 +32,15 @@ export default function SignupForm() {
       //   password: data.password,
       //   redirect: false,
       // });
-      router.push("/signin?registered=true");
+      redirectPath = "/signin?registered=true";
     } catch (err) {
       setError(`${err}`);
+      redirectPath = "/signup";
     } finally {
       setLoading(false);
+      if (redirectPath) {
+        redirect(redirectPath);
+      }
     }
   };
 
