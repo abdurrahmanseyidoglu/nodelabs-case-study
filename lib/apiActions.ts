@@ -1,7 +1,6 @@
 import type {
   LoginResponse,
   RegisterResponse,
-  ApiError,
   UserProfileResponse,
   FinancialSummaryResponse,
   WorkingCapitalResponse,
@@ -10,6 +9,7 @@ import type {
   ScheduledTransfersResponse,
   RefreshTokenResponse,
 } from "@/types/ApiResponse";
+import { handleApiResponse } from "./apiError";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
@@ -22,14 +22,7 @@ export async function _login(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
   });
-
-  const data: LoginResponse | ApiError = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error((data as ApiError).message || "Login failed");
-  }
-
-  return data as LoginResponse;
+  return handleApiResponse(res);
 }
 
 export async function _register(
@@ -42,14 +35,7 @@ export async function _register(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ fullName, email, password }),
   });
-
-  const data: RegisterResponse | ApiError = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error((data as ApiError).message || "Registration failed");
-  }
-
-  return data as RegisterResponse;
+  return handleApiResponse(res);
 }
 
 export async function _refreshToken(
@@ -60,14 +46,7 @@ export async function _refreshToken(
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ refreshToken }),
   });
-
-  const data: RefreshTokenResponse | ApiError = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error((data as ApiError).message || "Token refresh failed");
-  }
-
-  return data as RefreshTokenResponse;
+  return handleApiResponse(res);
 }
 
 export async function _getUserProfile(
@@ -80,14 +59,7 @@ export async function _getUserProfile(
       Authorization: `Bearer ${accessToken}`,
     },
   });
-
-  const data: UserProfileResponse | ApiError = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error((data as ApiError).message || "Failed to get profile");
-  }
-
-  return data as UserProfileResponse;
+  return handleApiResponse(res);
 }
 
 export async function _getFinancialSummary(
@@ -100,14 +72,7 @@ export async function _getFinancialSummary(
       Authorization: `Bearer ${accessToken}`,
     },
   });
-
-  const data: FinancialSummaryResponse | ApiError = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error((data as ApiError).message || "Failed to get summary");
-  }
-
-  return data as FinancialSummaryResponse;
+  return handleApiResponse(res);
 }
 
 export async function _getWorkingCapital(
@@ -120,16 +85,7 @@ export async function _getWorkingCapital(
       Authorization: `Bearer ${accessToken}`,
     },
   });
-
-  const data: WorkingCapitalResponse | ApiError = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error(
-      (data as ApiError).message || "Failed to get working capital"
-    );
-  }
-
-  return data as WorkingCapitalResponse;
+  return handleApiResponse(res);
 }
 
 export async function _getWallet(accessToken: string): Promise<WalletResponse> {
@@ -140,14 +96,7 @@ export async function _getWallet(accessToken: string): Promise<WalletResponse> {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-
-  const data: WalletResponse | ApiError = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error((data as ApiError).message || "Failed to get wallet");
-  }
-
-  return data as WalletResponse;
+  return handleApiResponse(res);
 }
 
 export async function _getRecentTransactions(
@@ -164,14 +113,7 @@ export async function _getRecentTransactions(
       },
     }
   );
-
-  const data: RecentTransactionsResponse | ApiError = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error((data as ApiError).message || "Failed to get transactions");
-  }
-
-  return data as RecentTransactionsResponse;
+  return handleApiResponse(res);
 }
 
 export async function _getScheduledTransfers(
@@ -184,12 +126,5 @@ export async function _getScheduledTransfers(
       Authorization: `Bearer ${accessToken}`,
     },
   });
-
-  const data: ScheduledTransfersResponse | ApiError = await res.json();
-
-  if (!res.ok || !data.success) {
-    throw new Error((data as ApiError).message || "Failed to get transfers");
-  }
-
-  return data as ScheduledTransfersResponse;
+  return handleApiResponse(res);
 }

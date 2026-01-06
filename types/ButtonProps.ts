@@ -1,5 +1,5 @@
 export default interface ButtonProps {
-    text?: string;
+  text?: string;
   variant: "primary" | "secondary";
   hasIcon?: boolean;
   iconPath?: string;
@@ -8,5 +8,6 @@ export default interface ButtonProps {
   iconAlt?: string;
   isLoading?: boolean;
   type?: "submit" | "reset" | "button";
+  className?: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 }
